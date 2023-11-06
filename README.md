@@ -4,11 +4,8 @@ This repository contains the code and related materials for a study titled "[Tit
 
 ## Table of Contents
 - [Overview](#overview)
-- [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
-- [Code Structure](#code-structure)
 - [Usage](#usage)
-- [Results](#results)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -17,19 +14,16 @@ This repository contains the code and related materials for a study titled "[Tit
 Brief description of the project, its objectives, and the role of the code in achieving those objectives.
 Mention any key findings or contributions of the thesis.
 
-## Prerequisites
-
-List the software and dependencies required to run the code. Include versions, if necessary. For example:
-- Python 3.7 or higher
-- Required Python packages (e.g., NumPy, TensorFlow)
-- Any other specific tools or libraries
-
 ## Getting Started
 
-Step-by-step instructions on how to get the code up and running. Include any configuration steps, installation guides, or data setup. For example:
+- JavaScript runs in GEE with ASI repository
+- Python code was written on (version) + used packages are at the beginning of each script
+- R code was written on (version) using Visual Studio Code (version) (but any R environment is possible) + used packages are at the beginning of each script
+- Any other specific tools or libraries
 
-1. Clone the repository:
+## Usage
 
-```bash
-git clone https://github.com/yourusername/your-thesis-repo.git
+Step-by-step instructions on how to use the code.Link to each script in order:
+
+1. Image Preprocessing...
 
