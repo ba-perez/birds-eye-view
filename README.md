@@ -17,10 +17,11 @@ The developed workflow provided insights into factors influencing Curlews’ fie
 
 ## Getting Started
 
-- JavaScript runs in GEE with ASI repository
-- Python code was written on (version) + used packages are at the beginning of each script
-- R code was written on (version) using Visual Studio Code (version) (but any R environment is possible) + used packages are at the beginning of each script
-- Any other specific tools or libraries
+The code used in this study is ran on Google Earth Engine Javascript and Python. Before you begin, make sure you have the following:
+
+**1. Google Earth Engine account:** If you don't have one, sign up for a Google Earth Engine account at earthengine.google.com.
+**2. Google Earth Engine Python API:** Install the Earth Engine Python API by following the instructions [here - WIP].
+**3. Python environment:** make sure you have an environment that can run Python scripts. The code in this repository was written using Visual Studio Code, which can be installed from code.visualstudio.com.
 
 ## Usage
 
