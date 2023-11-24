@@ -10,19 +10,15 @@ var endDate = '2023-07-31';
 //define a calendar range to filter Landsat-7's image collection by
 //within the date range, only images within the specified months will be selected
 //this is relevant when the date range covers more than one year
-
 var startMonth = 3;
 var endMonth = 7;
 
 //define a region to filter Landsat-7's image collection by
-//only images overlapping with the feature will be chosen
-//region may be a coordinate, a form drawn in GEE,
-//or an uploaded asset (GeoTIFF, shapefile)
-
+//this code works with a shapefile uploaded to GEE as an asset
+//the shapefile should contain each field as a separate feature
 var region = rt_2018;
 
 //load the Landsat-7 image collection, filter by specifications
-
 var l7_original = ee.ImageCollection("LANDSAT/LE07/C02/T1_L2")
                      .filterDate(startDate, endDate)
                      .filter(ee.Filter.calendarRange(startMonth, endMonth, 'month'))
@@ -35,7 +31,6 @@ Map.centerObject(region, 15); //center visualisation on defined region
 ///////////////////////////////////////
 
 //cloud masking function
-
 function maskL7sr(image) {
   var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
   var saturationMask = image.select('QA_RADSAT').eq(0);
@@ -48,7 +43,6 @@ function maskL7sr(image) {
 }
 
 //apply cloud mask
-
 var l7_masked = l7_original.map(maskL7sr);
 
 ///////////////////////////////////////
@@ -56,7 +50,6 @@ var l7_masked = l7_original.map(maskL7sr);
 ///////////////////////////////////////
 
 //select bands for resampling
-
 var l7_masked = ee.ImageCollection(l7_masked)
   .select(
     ['SR_B1', 'SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B7']
@@ -64,7 +57,6 @@ var l7_masked = ee.ImageCollection(l7_masked)
 
 //define new resolution as reference
 //sentinel-2 bands with 10m resolution are used
-
 var reference_S2_10m = ee.ImageCollection("COPERNICUS/S2_SR")
   .filterDate(startDate, endDate)
   .filterBounds(region)
@@ -74,7 +66,6 @@ var reference_S2_10m = ee.ImageCollection("COPERNICUS/S2_SR")
   );
 
 //resampling function using bicubic interpolation
-
 var resampleLandsat = function(image) {
   var resampled = image
     .resample('bicubic')
@@ -103,136 +94,61 @@ Awesome Spectral Indices for GEE: https://github.com/davemlz/awesome-ee-spectral
 //require the module from the open repository
 var spectral = require("users/dmlmont/spectral:spectral");
 
-//define 
+//define region for use in the module
 var pivot = region;
 
-// CHECK THE REQUIRED BANDS
-//print('Required bands for NDVI',spectral.indices.NDVI.bands);
+//check bands required for the index (optional)
+//print('Required bands for NDVI', spectral.indices.NDVI.bands);
 
-// DATASET TO USE: L7 L2
-var dataset = "LANDSAT/LE07/C02/T1_L2"; // THIS DATASET IS THE STAC CATALOG COLLECTION NAME
-                                        // IT IS USED TO GET THE SCALE AND OFFSET VALUES OF THE COLLECTION
+//define dataset to get the scale and offset values from
+var dataset = "LANDSAT/LE07/C02/T1_L2";
 
-//print(dataset);
-
-// FUNCTION TO MAP OVER AN IMAGE COLLECTION
+//module function to add index to image collection
 function addIndices(img) {
-  
-  // SCALE THE IMAGE
   img = spectral.scale(img,dataset); 
   img = spectral.offset(img,dataset);
   
-  // REQUIRED PARAMETERS ACCORDING TO THE REQUIRED BANDS
+  //required bands to calculate desired index
   var parameters = {
     "N": img.select("SR_B4"),
     "R": img.select("SR_B3"),
-    "B": img.select("SR_B1"),
-    "G": img.select("SR_B2"),
-    "S1": img.select("SR_B5"),
-    "S2": img.select("SR_B7"),
-    "L": 0.5
   };
 
-  // COMPUTE EVI and MNDVI
+  //compute NDVI
   return spectral.computeIndex(
-    img,["NDVI", "SAVI", "MSI", "NMDI", "MNDWI", "NDWI", "GNDVI"],
+    img,["NDVI"],
     parameters);
   
 }
 
-// USE THE DATASET HERE
+//apply function to dataset
 var l7_masked = l7_masked.map(addIndices);
-
-print(l7_masked);
-
-///////////////////////////////////////
-///////// ** VISUALISATION ** /////////
-///////////////////////////////////////
-
-var visParams = {bands: ['SR_B3', 'SR_B2', 'SR_B1'], min: 0, max: 0.3, gamma: 1.1};
-var visParamsNDVI = {min: -1, max: 1, palette: ['green', 'white', 'blue']};
-
-//Visualise stacks of masked images
-//https://gis.stackexchange.com/questions/366056/how-to-add-to-the-map-all-the-images-on-a-image-collection-with-cloud-pixels-mas
-  //Number of resulting images in IC//
-  var listOfImages = l7_masked.toList(l7_masked.size());
-for(var i = 0; i < 15; i++){
-  var image = ee.Image(listOfImages.get(i));
-//  Map.addLayer(image, visParams, i.toString());
-}
-
-//Visparams for fields
-var felder_vis = region.style({
-  color: 'black',
-  width: 2,
-  fillColor: '00000000',
-  lineType: 'solid',
-});
-
-//Map.addLayer(felder_vis, {}, "Felder");
 
 ///////////////////////////////////////
 ////////////// ** CSV ** //////////////
 ///////////////////////////////////////
 
+//function to calculate NDVI medians for each field in shape file
+//and define information to be added to the CSV file
 var region_list = region.toList(region.size());
-
 var forExport = region_list.map(function (ele) {
-  
   var l7_masked_export = l7_masked.filter(ee.Filter.bounds(ee.Feature(ele).geometry()));
-  
   var getData = l7_masked_export.toList(l7_masked_export.size()).map(function (e) {
-    
-    //Date for Sentinel 2, hopefully works for Landsat 7
     var date = ee.Date(ee.Image(e).get("system:time_start")).format().slice(0,10);
-    
-    var blue = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('SR_B1');
-    var green = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('SR_B2');
-    var red = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('SR_B3');
-    var nir = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('SR_B4');
-    var swir1 = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('SR_B5');
-    var swir2 = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('SR_B7');
     var NDVI = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('NDVI');
-    var SAVI = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('SAVI');
-    var MSI = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('MSI');
-    var NMDI = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('NMDI');
-    var MNDWI = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('MNDWI');
-    var NDWI = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('NDWI');
-    var GNDVI = ee.Image(e).reduceRegion(ee.Reducer.median(), ee.Feature(ele).geometry()).get('GNDVI');
-
-    var cloudy = ee.Image(e).get("CLOUD_COVER");
-
     var ft = ee.Feature(null, {'date': date, 
-                               'blue': blue,
-                               'green': green,
-                               'red': red,
-                               'nir': nir,
-                               'swir1': swir1,
-                               'swir2': swir2,
                                'NDVI': NDVI,
-                               'SAVI': SAVI,
-                               'MSI': MSI,
-                               'NMDI': NMDI,
-                               'MNDWI': MNDWI,
-                               'NDWI': NDWI,
-                               'GNDVI': GNDVI,
-                               'cloud_cover': cloudy,
-                               'field_id': ee.Feature(ele).get('new_id')
-      
+                               'field_id': ee.Feature(ele).get('fid') //change 'fid' to the name of the field ID column in the shapefile being processed
     });
-    
     return ft;
-    
   });
-  
   return getData;
-  
 });
 
-// Export the time-series as a csv.
+//export NDVI time series as CSV to a Google Drive folder
 Export.table.toDrive({
     collection: ee.FeatureCollection(forExport.flatten()),
-    selectors: 'date, blue, green, red, nir, swir1, swir2, NDVI, SAVI, MSI, NMDI, MNDWI, NDWI, GNDVI, cloud_cover, field_id',
-    description: 'L7_RT_2018',
-    folder: 'extra_birds'
+    selectors: 'date, NDVI, field_id',
+    description: 'L7_2017_2018', //define a name for the CSV
+    folder: 'NDVI_timeseries' //specify the destination folder. The folder needs to exist in the Google Drive linked to the GEE account.
 });
