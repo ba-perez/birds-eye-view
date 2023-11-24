@@ -123,7 +123,7 @@ masked_IC = IC_withMaskBands.map(maskCloudsAndShadows)
 ################# NDVI ################
 #######################################
 
-#calculate NDVI using the code from Monteiro et al. (2023)
+#calculate NDVI
 #resulting images will only have NDVI bands after this step
 IC_withIndices = masked_IC.scaleAndOffset().spectralIndices(["NDVI"])
 
