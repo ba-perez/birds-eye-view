@@ -16,7 +16,7 @@ var endMonth = 7;
 //define a region to filter Landsat-7's image collection by
 //this code works with a shapefile uploaded to GEE as an asset
 //the shapefile should contain each field as a separate feature
-var region = rt_2018;
+var region = region_asset;
 
 //load the Landsat-7 image collection, filter by specifications
 var l7_original = ee.ImageCollection("LANDSAT/LE07/C02/T1_L2")
@@ -73,7 +73,6 @@ var resampleLandsat = function(image) {
       crs: reference_S2_10m.first().projection().crs(),
       scale: reference_S2_10m.first().projection().nominalScale() //scale 10
     });
-
   return resampled.copyProperties(image, image.propertyNames());
 };
 
@@ -149,6 +148,6 @@ var forExport = region_list.map(function (ele) {
 Export.table.toDrive({
     collection: ee.FeatureCollection(forExport.flatten()),
     selectors: 'date, NDVI, field_id',
-    description: 'L7_2017_2018', //define a name for the CSV
+    description: 'L7_2017_2023', //define a name for the CSV
     folder: 'NDVI_timeseries' //specify the destination folder. The folder needs to exist in the Google Drive linked to the GEE account.
 });
