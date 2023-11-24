@@ -31,4 +31,4 @@ The details about parameter setting are described in each script.
 
 The JavaScript code runs in the GEE code editor with out the need to install additional packages. Simply copy the desired code to your own repository.
 
-The Python code requires the Google Earth Engine API, as described in [Getting Started](#getting-started), and additional modules which are listed at the beginning of each script. A guide to the installation of Python modules can be found [here]([code.visualstudio.com](https://docs.python.org/3/installing/index.html)).
+The Python code requires the Google Earth Engine API, as described in [Getting Started](#getting-started), and additional modules which are listed at the beginning of each script. A guide to the installation of Python modules can be found [here](https://docs.python.org/3/installing/index.html).
