@@ -1,6 +1,6 @@
-# Introduction
+# Bird’s-eye view: Remote sensing insights into the impact of mowing events on Eurasian Curlew habitat selection
 
-This repository contains the code and related materials for a study titled "Bird’s-eye view: Remote sensing insights into the impact of mowing events on Eurasian Curlew habitat selection". It is intended to provide an overview of the project, the codebase, and how to reproduce the developed workflow.
+This repository contains the code and related materials for the study titled "Bird’s-eye view: Remote sensing insights into the impact of mowing events on Eurasian Curlew habitat selection". It provides an overview of the project, the codebase, and how to reproduce the developed workflow for mowing event detection. It is intended to be an approachable, reproducible guide for researchers and non-experts working with optical remote sensing in environmental studies.
 
 ## Table of Contents
 - [Overview](#overview)
