@@ -17,17 +17,18 @@ The developed workflow provided insights into factors influencing Curlews’ fie
 
 ## Getting Started
 
-The code used in this study is ran on Google Earth Engine Javascript and Python. Before you begin, make sure you have the following:
+The code used in this study is ran on Google Earth Engine (GEE) JavaScript and Python. Before you begin, make sure you have the following:
 
 **1. Google Earth Engine account:** If you don't have one, sign up for a Google Earth Engine account at [earthengine.google.com](earthengine.google.com).
 
-**2. Python environment:** make sure you have an environment that can run Python scripts. The code in this repository was written using Visual Studio Code, which can be installed from  [code.visualstudio.com](code.visualstudio.com).
+**2. Python environment:** make sure you have an environment that can run Python scripts. The code in this repository was written using Visual Studio Code, which can be installed from [code.visualstudio.com](code.visualstudio.com).
 
 **3. Google Earth Engine Python API:** Install the Earth Engine Python API by following the instructions [here](https://developers.google.com/earth-engine/guides/python_install).
 
 ## Usage
 
-Step-by-step instructions on how to use the code.Link to each script in order:
+The details about parameter setting are described in each script. 
 
-1. Image Preprocessing...
+The JavaScript code runs in the GEE code editor with out the need to install additional packages. Simply copy the desired code to your own repository.
 
+The Python code requires the Google Earth Engine API, as described in [Getting Started](#getting-started), and additional modules which are listed at the beginning of each script. A guide to the installation of Python modules can be found [here]([code.visualstudio.com](https://docs.python.org/3/installing/index.html)).
