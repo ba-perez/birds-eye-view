@@ -6,8 +6,6 @@ This repository contains the code and related materials for the study titled "Bi
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
