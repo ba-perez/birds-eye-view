@@ -43,4 +43,11 @@ The scripts necessary for processing the satellite products and obtaining mowing
 6. [Apply Isolation Forest and Savitsky-Golay-filter](https://github.com/ba-perez/birds-eye-view/blob/main/6_IF_and_SG.py)
 7. [Find cutting dates](https://github.com/ba-perez/birds-eye-view/blob/main/7_find_cutting_dates.py)
 
+## Contact Author
 
+If you encounter any issues or have questions, you can contact me via:
+
+- Email: barbara.araujo@tum.de
+- LinkedIn: [Barbara M. P. B. de Araújo](https://www.linkedin.com/in/barbara-mpb-araujo/?locale=en_US)
+
+Optimisation inputs are also welcome. 
