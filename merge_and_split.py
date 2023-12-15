@@ -8,6 +8,8 @@ import random
 
 #functions for minmax normalisation
 def extract_region(field_id):
+    #extract region code from the field_id
+    #KM, LM, AL in this study
     match = re.match(r'^(KM|LM|AL)', field_id)
     if match:
         return match.group()
@@ -19,7 +21,7 @@ def normalise_columns_byYear_Region(df):
     
     normalised_df = df.copy()
     
-    # Extract region from field_id and create a new column 'region'
+    #extract region from field_id and create a new column 'region'
     normalised_df['region'] = df['field_id'].apply(extract_region)
     
     groups = normalised_df.groupby(['year', 'region'])
@@ -37,6 +39,7 @@ def normalise_columns_byYear_Region(df):
 
 #function to clean date-field_id duplicates in dataframe
 #usually from overlapping observations
+#prioritising specific satellites
 def clean_duplicates(df):
     minmax_duplicates = df.duplicated(subset=['date', 'field_id'], keep=False)
 
