@@ -30,3 +30,17 @@ The details about parameter setting are described in each script.
 The JavaScript code runs in the GEE code editor with out the need to install additional packages. Simply copy the desired code to your own repository.
 
 The Python code requires the Google Earth Engine API, as described in [Getting Started](#getting-started), and additional modules which are listed at the beginning of each script. A guide to the installation of Python modules can be found [here](https://docs.python.org/3/installing/index.html).
+
+## Code Structure
+
+The scripts necessary for processing the satellite products and obtaining mowing dates are present below in the order to be executed.
+
+1. [Landsat-7 preprocessing](#landsat-7-preprocessing.js)
+2. [Landsat-8 preprocessing](#landsat-8-preprocessing.js)
+3. [Sentinel-2 preprocessing](#sentinel-2-preprocessing.py)
+4. [Dove preprocessing](#dove-preprocessing.py)
+5. [Merge satellite products, normalise dataframe, split into training and validation](#merge_and_split.py)
+6. [Apply Isolation Forest and Savitsky-Golay-filter](#IF_and_SG.py)
+7. [Find cutting dates](#find_cutting_dates.py)
+
+
