@@ -4,9 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import re
-from scipy.ndimage import gaussian_filter1d
-from sklearn.ensemble import IsolationForest
-from scipy import signal
+import random
 
 #functions for minmax normalisation
 def extract_region(field_id):
