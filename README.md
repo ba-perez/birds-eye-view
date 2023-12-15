@@ -35,12 +35,12 @@ The Python code requires the Google Earth Engine API, as described in [Getting S
 
 The scripts necessary for processing the satellite products and obtaining mowing dates are present below in the order to be executed.
 
-1. [Landsat-7 preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/landsat-7-preprocessing.js)
-2. [Landsat-8 preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/landsat-8-preprocessing.js)
-3. [Sentinel-2 preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/sentinel-2-preprocessing.py)
-4. [Dove preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/dove-preprocessing.py)
-5. [Merge satellite products, normalise dataframe, split into training and validation](https://github.com/ba-perez/birds-eye-view/blob/main/merge_and_split.py)
-6. [Apply Isolation Forest and Savitsky-Golay-filter](https://github.com/ba-perez/birds-eye-view/blob/main/IF_and_SG.py)
-7. [Find cutting dates](https://github.com/ba-perez/birds-eye-view/blob/main/find_cutting_dates.py)
+1. [Landsat-7 preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/1_landsat-7-preprocessing.js)
+2. [Landsat-8 preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/2_landsat-8-preprocessing.js)
+3. [Sentinel-2 preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/3_sentinel-2-preprocessing.py)
+4. [Dove preprocessing](https://github.com/ba-perez/birds-eye-view/blob/main/4_dove-preprocessing.py)
+5. [Merge satellite products, normalise dataframe, split into training and validation](https://github.com/ba-perez/birds-eye-view/blob/main/5_merge_and_split.py)
+6. [Apply Isolation Forest and Savitsky-Golay-filter](https://github.com/ba-perez/birds-eye-view/blob/main/6_IF_and_SG.py)
+7. [Find cutting dates](https://github.com/ba-perez/birds-eye-view/blob/main/7_find_cutting_dates.py)
 
 
