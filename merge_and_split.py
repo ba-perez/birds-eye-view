@@ -255,27 +255,27 @@ normalised_merged_satellites.info()
 #function to create training and validation datasets
 #with a random 80/20 split
 def generate_train_validation_data(dataframe, seed=42):
-    # Set the seed
+    #set the seed
     random.seed(seed)
 
-    # Assign group numbers to each combination of field_id and year
+    #assign group numbers to each combination of field_id and year
     dataframe['group_nr'] = dataframe.groupby(['field_id', pd.to_datetime(dataframe['date']).dt.year]).ngroup()
 
-    # Determine the number of groups for training data
+    #determine the number of groups for training data
     num_train_groups = int(dataframe['group_nr'].nunique() * 0.8)
 
-    # Group dataframe by 'group_nr'
+    #group dataframe by 'group_nr'
     field_groups = dataframe.groupby('group_nr')
 
-    # Shuffle the group_nrs
+    #shuffle the group_nrs
     group_nrs = list(field_groups.groups.keys())
     random.shuffle(group_nrs)
 
-    # Initialise train and validation groups
+    #initialise train and validation groups
     train_groups = []
     validation_groups = []
 
-    # Split data into train and validation groups
+    #split data into train and validation groups
     for group_nr in group_nrs:
         group = field_groups.get_group(group_nr)
         if len(train_groups) < num_train_groups:
@@ -283,7 +283,7 @@ def generate_train_validation_data(dataframe, seed=42):
         else:
             validation_groups.append(group)
 
-    # Concatenate train and validation groups into train and validation data
+    #concatenate train and validation groups into train and validation data
     training_data = pd.concat([pd.DataFrame(group, columns=dataframe.columns) for group in train_groups])
     validation_data = pd.concat([pd.DataFrame(group, columns=dataframe.columns) for group in validation_groups])
 
